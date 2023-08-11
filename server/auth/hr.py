@@ -27,6 +27,7 @@ def generate_token(id, secret_key):
 def login_hr(email,password):
     supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
     data, count = supabase.table('hrdb').select('email', 'password', 'hr_id').eq('email', email).execute()
+    print(data)
     if bcrypt.checkpw(password.encode('utf-8'), data[1][0]['password'].encode('utf-8')):
         return 200, data[1][0]['hr_id']  
     return 401
@@ -174,10 +175,39 @@ def schedule_test(data):
         return 200
     return 401
 
+def meta_data_scheduled(jd_id):
+    supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
+    scheduled_data, count = supabase.table('scheduled').select('*').execute()
+    meta_data = []
+    for i in scheduled_data[1]:
+        if jd_id == i['jd_id']:
+            meta_data.append(i)
+    return meta_data
+
 def interview_question_generator():
     supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
     question_data, count = supabase.table('scheduled').select('*').execute()
     # Compare end date with todays date and start generating questions ans update the database with question id
     # if end date is less than todays date then delete the jd from database
     return question_data
-    return
+
+def get_user_result(jd_id):
+    supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
+    exam_data, _ = supabase.table('exam').select('*').eq('jd_id', jd_id).execute()
+    user_data = []
+    for i in range(len(exam_data[1])):
+        user = {
+            'user_id': exam_data[1][i]['user_id'],
+            'username': exam_data[1][i]['name'],
+            'email': exam_data[1][i]['email'],
+            'test_score': exam_data[1][i]['test_score'],
+        }
+        user_data.append(user)
+    return user_data
+
+
+
+
+
+
+

@@ -26,7 +26,7 @@ function Login() {
       if (response.ok) {
         localStorage.setItem("access_token", data.token);
         setMessage(data.message);
-        navigate("/home");
+        navigate("/create");
       } else {
         setMessage("Signup failed");
       }

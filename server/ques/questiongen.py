@@ -15,7 +15,9 @@ def clean_and_convert_to_json(output):
         except json.JSONDecodeError:
             pass  # Ignore non-formatted or invalid JSON
     json_array = json.dumps(json_data, indent=4)
-    return json_array
+    data = json.loads(json_array)
+    print(data)
+    return data
 
 
 def MCQGen(num_questions, difficulty_level, topic):

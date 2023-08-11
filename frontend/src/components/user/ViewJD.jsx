@@ -49,7 +49,7 @@ function ViewJD() {
     });
     const data = await response.json();
   };
-  console.log(data);
+
 
   return (
     <div className="flex ">
@@ -64,7 +64,7 @@ function ViewJD() {
             {data.map((item) => (
               <div
                 key={item.jd_id}
-                className={`bg-white dark:text-white dark:bg-neutral-800 p-4 my-2 rounded-lg shadow flex flex-row justify-between items-stretch ${
+                className={`bg-white dark:text-white dark:bg-neutral-800 p-4 mrounded-lg shadow flex flex-row justify-between rounded-xl  ${
                   hoveredCard === item.jd_id
                     ? "shadow-lg shadow-sky-500 duration-500"
                     : ""
@@ -76,8 +76,8 @@ function ViewJD() {
                   <h2 className="text-xl font-semibold">{item.title}</h2>
                   <p className="mt-2">{item.description}</p>
                   <div
-                    className={`relative mt-4 bg-white/90 duration-500 delay-200 dark:bg-neutral-800 flex flex-col p-4 overflow-y-auto max-h-48 ${
-                      hoveredCard === item.jd_id ? "opacity-100" : "opacity-0"
+                    className={`relative m  bg-white/90 duration-500 delay-200 dark:bg-neutral-800 flex flex-col    ${
+                      hoveredCard === item.jd_id ? "opacity-100" : "opacity-50"
                     }`}
                   >
                     <h1 className="mb-2 font-semibold">

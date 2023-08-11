@@ -268,7 +268,7 @@ def rank_resume():
         description = data['content']
         candidates_applied = get_applied_candidates(str(jd_id))
         for candidate in candidates_applied:
-            data = resume_ranking(candidate['resume_path'], description)
+            data = resume_ranking(str(os.path.abspath(candidate['resume_path'])), description)
             candidate['score'] = data[0][1]   
         return jsonify(candidates_applied)
 
@@ -339,16 +339,41 @@ def hr_shortlist_test():
         schedule_test(data)
         return jsonify({"message": "test"})
 
-@app.route('/api/hr/interview-question', methods=['POST'])
+@app.route('/api/hr/interview-question', methods=['GET'])
 def interview_question():
-    hr_id = request.headers.get('X-Hr-ID')
-    if not hr_id:
-        return jsonify({'error':'HR ID not found'})
+    user_id = request.headers.get('X-User-ID')
+    if not user_id:
+        return jsonify({'error':'User ID not found'})
     
+    if request.method == 'GET':
+        jd_id = request.headers.get('X-JD-ID')
+        data = meta_data_scheduled(jd_id)
+        # questions = data
+        questions = data[-1]['questions']
+        domain = data[-1]['domain']
+        difficulty = data[-1]['difficulty']
+        response = MCQGen(int(questions),domain,difficulty)
+        return response
+
+@app.route('/api/user/submit',methods=['POST'])
+def submit_test():
     if request.method == 'POST':
         data = request.get_json()
-        
-    return jsonify({"message": "test"})
+        response = submit_user_test(data)
+        return jsonify({'message':'200'})
+
+    return jsonify({'message':'200'})
+
+@app.route('/api/hr/result',methods=['GET'])
+def test_result():
+    # user_id = request.headers.get('X-User-ID')
+    # jd_id = request.headers.get('X-JD-ID')
+    # if not user_id:
+    #     return jsonify({'error':'User ID not found'})
+    if request.method == 'GET':
+        jd_id = request.headers.get('X-JD-ID')
+        response = get_user_result(jd_id)
+        return jsonify(response)
 
 """ 
     All Admin Endpoints

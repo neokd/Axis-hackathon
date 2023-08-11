@@ -164,7 +164,7 @@ const Jobform = () => {
               ) : (
                 <div className="flex flex-row space-x-4 w-fit ">
                   <button className="justify-start w-fit border border-sky-500  dark:text-white/80 rounded-md px-4 py-2 hover:bg-sky-500 hover:text-white duration-300 shadow-lg hover:shadow-sky-500" onClick={handleEditMode}>Edit Profile</button>
-                  <button className="justify-start w-fit border border-red-500  dark:text-white/80 rounded-md px-4 py-2 hover:bg-red-500 hover:text-white duration-300 shadow-lg hover:shadow-red-500" onClick={() => handleDelete(job.jd_id)}>Delete Profile</button>
+                  <button className="justify-start w-fit border border-red-500  dark:text-white/80 rounded-md px-4 py-2 hover:bg-red-500 hover:text-white duration-300 shadow-lg hover:shadow-red-500" onClick={() => handleDelete(job.jd_id)}>Delete JD</button>
                 </div>
               )
             }

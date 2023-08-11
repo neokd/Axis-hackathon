@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import Notifications from './Notification';
 
 function PostJD() {
     const [title, setTitle] = useState('');
@@ -12,6 +13,7 @@ function PostJD() {
     const [experience, setExperience] = useState('');
     const [skills, setSkills] = useState('');
     const [endDate, setEndDate] = useState('');
+    const [message, setMessage] = useState('');
     const postJD = async (title, description, location, qualification, experience, skills, salary, date) => {
         const hr_id = localStorage.getItem('hr_id');
         const skillsArray = skills.split(',');
@@ -35,6 +37,7 @@ function PostJD() {
         });
         if (response.ok) {
             console.log('Job Posted Successfully');
+            setMessage('Job Posted Successfully');
         }
     }
 
@@ -46,6 +49,7 @@ function PostJD() {
             <div className="flex flex-col w-full md:ml-[17rem]">
                 <Navbar/>
                 <div className=" text-xl bg-white/90 dark:bg-neutral-900 duration-300 min-h-screen  font-semibold p-4">
+                    <Notifications message={message} />
                 <h1 className="text-3xl font-semibold dark:text-white/90 px-8 mt-6 ">Add Job Description</h1>
                     <div className="mt-8 px-8">
                         <div className="bg-zinc-100 shadow-lg   duration-300 dark:bg-neutral-800 rounded-xl p-4 flex flex-col justify-between">
@@ -122,7 +126,7 @@ function PostJD() {
                                     </div>
                                 </div>
                                 <div className="mt-6">
-                                    <button onClick={() => postJD(title, description, location, qualification, experience, skills, salary, endDate)} className="outline outline-2 dark:text-white outline-sky-600 hover:bg-sky-600 duration-300 shadow-lg hover:shadow-sky-500 py-2 px-4 rounded-md" >Post Job</button>
+                                    <button onClick={() => postJD(title, description, location, qualification, experience, skills, salary, endDate)} className="outline outline-2 dark:text-white hover:text-neutral-200 outline-sky-600 hover:bg-sky-600 duration-300 shadow-lg hover:shadow-sky-500 py-2 px-4 rounded-md" >Post Job</button>
                                 </div>
                             </div>
                         </div>

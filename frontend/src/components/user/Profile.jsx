@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import PdfPreviewer from '../utils/PdfPreviewer';
 import Upload from './Upload';
 import { Link } from 'react-router-dom';
+import Notifications from './Notifications';
 
 function Profile() {
     const [name, setName] = useState('');
@@ -21,6 +22,7 @@ function Profile() {
     const [data, setData] = useState([]);
     const [editMode, setEditMode] = useState(false);
     const  [viewResume, setViewResume] = useState(false);
+    const [message,setMessage] = useState('');
 
     const navigate = useNavigate();
     useEffect(() => {
@@ -51,6 +53,33 @@ function Profile() {
 
     const handleSave = async () => {
         const user_id = localStorage.getItem('user_id');
+        // If any one of data is empty then set the defualt value
+        if (name === '') {
+            setName(data.username);
+        } else if (email === '') {
+            setEmail(data.email);
+        } else if (phone === '') {
+            setPhone(data.phone);
+        } else if (degree === '') {
+            setDegree(data.degree);
+        } else if (college === '') {
+            setCollege(data.college_name);
+        } else if (skills === '') {
+            setSkills(data.skills);
+        } else if (experience === '') {
+            setExperience(data.experience);
+        } else if (total === '') {
+            setTotal(data.total_experience);
+        } else if (github === '') {
+            setGithub(data.github);
+        } else if (linkedin === '') {
+            setLinkedin(data.linkedin);
+        } else if (city === '') {
+            setCity(data.city);
+        }
+        const skillsArray = skills.split(',').map((skill) => skill.trim());
+        const expArray = experience.split(',').map((exp) => exp.trim());
+
         const response = await fetch('/api/user/profile', {
             method: 'PUT',
             headers: {
@@ -63,18 +92,19 @@ function Profile() {
                 email: email,
                 phone: phone,
                 degree: degree,
+                skills: skillsArray,
                 college_name: college,
-                skills: skills,
-                experience: experience,
                 total_experience: total,
                 github: github,
-                city: linkedin,
-                location: city,
+                experience: expArray,
+                linkedin: linkedin,
+                city: city,
             }),
         });
-        const data = await response.json();
-        console.log(data);
+        const data2 = await response.json();
+        console.log(data2);
         setEditMode(false);
+        setMessage('Profile Updated Successfully');
         fetchUserData();
     };
 
@@ -84,8 +114,10 @@ function Profile() {
             <div className='flex flex-col w-full'>
                 <Navbar />
                 <div className="text-xl bg-white/90 dark:bg-neutral-900 duration-300 min-h-screen  font-semibold p-4">
+                <Notifications type={"success"} message={message}/>
                     <h1 className="text-3xl dark:text-white mx-8 mt-4 font-semibold">Profile</h1>
                     <div className="flex flex-col  gap-4 mt-8 w-3/4 space-y-2 mx-8 shadow-lg p-6 dark:bg-neutral-800/90 rounded-lg">
+                        
                         {
                             editMode ? <div className="flex flex-col gap-2">
                                 <label className="dark:text-white/80" htmlFor="name">Name</label>
@@ -107,7 +139,7 @@ function Profile() {
                         {
                             editMode ? <div className="flex flex-col gap-2">
                                 <label className="dark:text-white/80" htmlFor="name">Email</label>
-                                <input type="email" name="name" id="name" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={data.email} onChange={(e) => setEmail(e.target.value)} />
+                                <input type="email" name="name" id="name" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={email} onChange={(e) => setEmail(e.target.value)} />
                             </div> : <div className="flex flex-col gap-2">
                                 <label className="dark:text-white/80" htmlFor="email">Email</label>
                                 <input type="text" name="email" id="email" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={data.email} disabled />
@@ -146,7 +178,7 @@ function Profile() {
                                 <input type="email" name="name" id="name" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={data.experience} onChange={(e) => setExperience(e.target.value)} />
                             </div> : <div className="flex flex-col gap-2">
                                 <label className="dark:text-white/80" htmlFor="email">Expereince</label>
-                                <input type="text" name="email" id="email" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={data.experience} disabled />
+                                <input type="text" name="email" id="email" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={experience} disabled />
                             </div>
                         }
                         {
@@ -179,7 +211,7 @@ function Profile() {
                         {
                             editMode ? <div className="flex flex-col gap-2">
                                 <label className="dark:text-white/80" htmlFor="name">LinkedIn</label>
-                                <input type="email" name="name" id="name" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={data.linkedin} onChange={(e) => setGithub(e.target.value)} />
+                                <input type="" name="name" id="name" className="border bg-transparent dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2" defaultValue={data.linkedin} onChange={(e) => setLinkedin(e.target.value)} />
                             </div> : <div className="flex flex-col gap-2">
                                 <label className="dark:text-white/80" htmlFor="email">LinkedIn</label>
                                 <Link className='border bg-transparent text-lg dark:text-white/90 border-gray-300 dark:border-neutral-700 rounded-md p-2' to = {data.linkedin}>{data.linkedin}</Link>
@@ -194,11 +226,11 @@ function Profile() {
                                 <div className="flex flex-col gap-2">
                                 {
                                     viewResume ? <div className="flex flex-col gap-2">
-                                        <button className="outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 text-white rounded-md p-2" onClick={() => setViewResume(false)}>Hide</button>
+                                        <button className="outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 dark:text-white rounded-md p-2" onClick={() => setViewResume(false)}>Hide</button>
                                         <PdfPreviewer pdfBase64={data.resume_base64} />
                                         
                                     </div> : <div className="flex flex-col gap-2">
-                                        <button className="outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 text-white rounded-md p-2" onClick={() => setViewResume(true)}> Resume</button>
+                                        <button className="outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 dark:text-white rounded-md p-2" onClick={() => setViewResume(true)}> Resume</button>
                                     </div>
                                 }
                                 </div>
@@ -207,7 +239,7 @@ function Profile() {
                         }
      
                         {
-                            editMode ? <button className="outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 text-white rounded-md p-2" onClick={handleSave}>Save</button> : <button className="outline w-fit px-4 outline-sky-500 hover:bg-sky-600 duration-300 text-white rounded-md p-2" onClick={() => setEditMode(true)}>Edit</button>
+                            editMode ? <button className="outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 dark:text-white rounded-md p-2" onClick={handleSave}>Save</button> : <button className="outline w-fit px-4 outline-sky-500 hover:bg-sky-600 duration-300 dark:text-white rounded-md p-2" onClick={() => setEditMode(true)}>Edit</button>
                         }
                     </div>
                 </div>

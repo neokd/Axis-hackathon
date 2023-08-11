@@ -1,0 +1,41 @@
+[{
+        "question": "What is the most popular programming language used by Python developers?",
+        "options": [
+            "C++",
+            "JavaScript",
+            "Python",
+            "Ruby"
+        ],
+        "answer": 2
+    },
+    {
+        "question": "What is the command used to print a statement in Python?",
+        "options": [
+            "print",
+            "std::cout",
+            "echo",
+            "system.out.println"
+        ],
+        "answer": 0
+    },
+    {
+        "question": "What type of language is Python?",
+        "options": [
+            "Object Oriented",
+            "Functional",
+            "Procedural",
+            "Scripting"
+        ],
+        "answer": 3
+    },
+    {
+        "question": "What is the name of the Python package installer?",
+        "options": [
+            "NPM",
+            "pip",
+            "Maven",
+            "Yarn"
+        ],
+        "answer": 1
+    }
+]

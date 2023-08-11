@@ -1,22 +1,25 @@
 import React, { useState } from "react";
 import { HiMenuAlt3 } from "react-icons/hi";
-import { MdOutlineDashboard } from "react-icons/md";
+import { MdOutlineDashboard, MdSchedule } from "react-icons/md";
 import { RiSettings4Line } from "react-icons/ri";
 import { TbReportAnalytics } from "react-icons/tb";
 import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
 import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import { CgFileDocument } from "react-icons/cg";
+import { BsPostcard } from "react-icons/bs";
+import {TbListNumbers, TbUserX} from "react-icons/tb"
 
 const Sidebar = () => {
   const menus = [
     { name: "Dashboard", link: "/hr/home", icon: MdOutlineDashboard },
     { name: "Profile", link: "/hr/profile", icon: AiOutlineUser },
-    { name: "Post JD", link: "/hr/postjd", icon: FiMessageSquare },
-    { name: "Rank Resume", link: "/hr/rank", icon: FiFolder },
-    { name: "Performance", link: "/hr/shortlist", icon: TbReportAnalytics},
-    { name: "Schedule Test", link: "/hr/schedule", icon: FiShoppingCart },
-    { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
-    { name: "Setting", link: "/", icon: RiSettings4Line },
+    { name: "Post JD", link: "/hr/postjd", icon: BsPostcard },
+    { name: "Rank Resume", link: "/hr/rank", icon: CgFileDocument },
+    { name: "Performance", link: "/hr/shortlist", icon: TbReportAnalytics },
+    { name: "Schedule Test", link: "/hr/schedule", icon: MdSchedule },
+    { name: "Result", link: "/hr/result", icon: TbListNumbers },
+    { name: "Sign Out", link: "/login", icon: TbUserX },
   ];
   const [open, setOpen] = useState(true);
   return (

@@ -1,6 +1,10 @@
-import React from "react";
-import Quizy from "./QuizComponent";
+import React, { useEffect, useMemo, useState, useRef } from "react";
+import { Link } from "react-router-dom";
+import WebCam from 'react-webcam';
 
+function Timer({ initialTime, onTimeout }) {
+  const [seconds, setSeconds] = useState(initialTime);
+  const webcamRef = useRef(null);
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds((prevSeconds) => {
@@ -20,191 +24,96 @@ import Quizy from "./QuizComponent";
   }, [onTimeout]);
 
   return (
-    <div className="p-4 border rounded-lg shadow-md">
-      <p className="text-lg font-semibold mb-2">Time left: {seconds} seconds</p>
-      <div className="h-2 w-full bg-gray-200 rounded-lg">
-        <div
-          className="h-2 bg-blue-500 rounded-lg"
-          style={{ width: `${(seconds / initialTime) * 100}%` }}
-        ></div>
+    <>
+      <div className="flex flex-col justify-center items-center mb-4">
+        <button
+          onClick={() => {
+            const imageSrc = webcamRef.current.getScreenshot();
+          }}
+          className="px-4 py-2 mb-4 bg-red-500 text-white rounded-md hover:bg-sky-600 transition-colors duration-300"
+        >
+          Recording
+        </button>
+        <WebCam
+          audio={false}
+          ref={webcamRef}
+          width={300}
+          screenshotFormat="image/jpeg"
+          className="border rounded-md"
+        />
+
       </div>
-    </div>
+      <div className="p-4 border rounded-lg shadow-md">
+
+        <p className="text-lg font-semibold mb-2">Time left: {seconds} seconds</p>
+        <div className="h-2 w-full bg-gray-200 rounded-lg">
+          <div
+            className="h-2 bg-blue-500 rounded-lg"
+            style={{ width: `${(seconds / initialTime) * 100}%` }}
+          ></div>
+        </div>
+      </div>
+    </>
   );
 }
 
 function Quiz() {
-  const data = [
-    {
-      id: 1,
-      question: "Which planet is known as the Red Planet?",
-      options: ["Earth", "Mars", "Jupiter", "Venus"],
-      answer: 1,
-    },
-    {
-      id: 2,
-      question: "What is the largest mammal?",
-      options: ["Elephant", "Blue Whale", "Giraffe", "Hippopotamus"],
-      answer: 1,
-    },
-    {
-      id: 3,
-      question: "Which gas do plants use for photosynthesis?",
-      options: ["Oxygen", "Carbon Dioxide", "Hydrogen", "Nitrogen"],
-      answer: 1,
-    },
-    {
-      id: 4,
-      question: "What is the capital city of Japan?",
-      options: ["Beijing", "Seoul", "Tokyo", "Bangkok"],
-      answer: 2,
-    },
-    {
-      id: 5,
-      question: "Who painted the Mona Lisa?",
-      options: [
-        "Pablo Picasso",
-        "Leonardo da Vinci",
-        "Vincent van Gogh",
-        "Michelangelo",
-      ],
-    },
-
-    {
-      id: 6,
-      question:
-        "Which planet is known as the 'Morning Star' or 'Evening Star'?",
-      options: [
-        {
-          text: "Mars",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Venus",
-          correct: true,
-          marked: false,
-        },
-        {
-          text: "Mercury",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Neptune",
-          correct: false,
-          marked: false,
-        },
-      ],
-    },
-    {
-      id: 7,
-      question: "What is the chemical symbol for water?",
-      options: [
-        {
-          text: "H2O",
-          correct: true,
-          marked: false,
-        },
-        {
-          text: "CO2",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "O2",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "NaCl",
-          correct: false,
-          marked: false,
-        },
-      ],
-    },
-    {
-      id: 8,
-      question: "Which famous scientist developed the theory of relativity?",
-      options: [
-        {
-          text: "Isaac Newton",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Albert Einstein",
-          correct: true,
-          marked: false,
-        },
-        {
-          text: "Galileo Galilei",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Niels Bohr",
-          correct: false,
-          marked: false,
-        },
-      ],
-    },
-    {
-      id: 9,
-      question: "What is the largest organ in the human body?",
-      options: [
-        {
-          text: "Heart",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Liver",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Brain",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Skin",
-          correct: true,
-          marked: false,
-        },
-      ],
-    },
-    {
-      id: 10,
-      question: "Which gas do plants primarily release during photosynthesis?",
-      options: [ 
-        {
-          text: "Carbon Dioxide",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Oxygen",
-          correct: true,
-          marked: false,
-        },
-        {
-          text: "Hydrogen",
-          correct: false,
-          marked: false,
-        },
-        {
-          text: "Nitrogen",
-          correct: false,
-          marked: false,
-        },
-      ],
-    },
-  ];
-
+  const [done, setDone] = useState(false);
+  // const [data, setData] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [total, setTotal] = useState(0);
   const [showNextQuestion, setShowNextQuestion] = useState(false);
+  const data = [
+    {
+      "question": "What is the output of the following code? print(4 > 3 and 3 < 5)",
+      "options": ["true", "false", "Error", "None"],
+      "answer": 0
+    },
+    {
+      "question": "Which of the following is not a Python keyword?",
+      "options": ["import", "for", "variable", "break"],
+      "answer": 2
+    },
+    {
+      "question": "Which of the following is used to define a function in Python?",
+      "options": ["var", "function", "def", "return"],
+      "answer": 2
+    },
+    {
+      "question": "What is the output of the following code? print(2 + '2')",
+      "options": ["22", "4", "Error", "None"],
+      "answer": 2
+    },
+    {
+      "question": "What is the output of the following code snippet? nums = [2, 4, 6, 8] print(nums[::-1])",
+      "options": ["[2, 4, 6, 8]", "[8, 6, 4, 2]", "[6, 8, 4, 2]", "[2, 6, 4, 8]"],
+      "answer": 1
+    }
+  ]
+
+  // useEffect(() => {
+  //   const fetchQuestions = async () => {
+  //     const jd_id = localStorage.getItem('jd_id')
+  //     const response = await fetch('/api/hr/interview-question', {
+  //       method: 'GET',
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+  //         'X-User-ID': localStorage.getItem('user_id'),
+  //         'content-type': 'application/json',
+  //         'X-JD-ID': jd_id,
+  //       },
+  //     });
+
+  //     if (response.status === 400) {
+  //       console.log('Bad request');
+  //     } else {
+  //       const data = await response.json();
+  //       console.log(data[0]);
+  //       setData(data);
+  //     }
+  //   };
+  //   fetchQuestions();
+  // },[])
 
   const [markedOptions, setMarkedOptions] = useState(
     new Array(data.length).fill(null)
@@ -228,18 +137,18 @@ function Quiz() {
     updatedMarkedOptions[currentQuestionIndex] = selectedOptionIndex;
     setMarkedOptions(updatedMarkedOptions);
     setShowNextQuestion(true);
-
     setTimeout(goToNextQuestion, 500); // Delayed transition to next question
   };
 
   const currentQuestion = data[currentQuestionIndex];
 
-  console.log(markedOptions);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (currentQuestionIndex < data.length - 1) {
         goToNextQuestion();
+      } else {
+        submitTest();
       }
     }, 30000); // 30 seconds
 
@@ -247,8 +156,6 @@ function Quiz() {
   }, [currentQuestionIndex, data.length]);
 
   useEffect(() => {
-    // Calculate total marks
-
     let currentTotal = 0;
     for (let i = 0; i < data.length; i++) {
       if (markedOptions[i] === data[i].answer) {
@@ -258,27 +165,57 @@ function Quiz() {
     setTotal(currentTotal);
   }, [markedOptions, currentQuestionIndex, data]);
 
-  console.log("the total marks are ", total);
+
+  const submitTest = async () => {
+    const requestBody = {
+      jd_id: localStorage.getItem('jd_id'),
+      user_id: localStorage.getItem('user_id'),
+      test_score: total
+    };
+    try {
+      const response = await fetch('/api/user/submit', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+          'X-User-ID': localStorage.getItem('user_id'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody) // Convert the object to JSON
+      });
+
+      if (response.status === 400) {
+        console.log('Bad request');
+      } else {
+        const data = await response.json();
+
+        setDone(true)
+      }
+    } catch (error) {
+      console.error('Error sending request:', error);
+    }
+  };
+
+
 
   if (currentQuestionIndex !== data.length) {
     return (
       <div className="bg-gray-900 h-screen flex items-center justify-center text-white py-16">
+
         <div className="bg-gray-900  flex flex-col items-start justify-center text-white py-16 w-[48rem]  -ml-64">
+
           <div className="mb-8 text-3xl font-semibold">
             {currentQuestionIndex + 1}. {currentQuestion.question}
           </div>
-
           <div className="grid grid-cols-2 gap-16">
             {currentQuestion.options.map((item, index) => (
               <div
                 key={index}
-                className={`px-32 py-4 bg-gray-700 rounded-md cursor-pointer ${
-                  index === markedOptions[currentQuestionIndex]
-                    ? index === currentQuestion.answer
-                      ? "bg-green-500 hover:bg-green-600"
-                      : "bg-red-500 hover:bg-red-600"
-                    : "hover:bg-sky-600 transition-colors duration-300"
-                }`}
+                className={`px-32 py-4 bg-gray-700 rounded-md cursor-pointer ${index === markedOptions[currentQuestionIndex]
+                  ? index === currentQuestion.answer
+                    ? "bg-green-500 hover:bg-green-600"
+                    : "bg-red-500 hover:bg-red-600"
+                  : "hover:bg-sky-600 transition-colors duration-300"
+                  }`}
                 onClick={() => handleOptionClick(index)}
               >
                 {item}
@@ -286,34 +223,44 @@ function Quiz() {
             ))}
           </div>
 
+
           <div className="flex mt-8  ">
-            <button
-              className="px-4 py-2 outline outline-sky-500 text-white rounded-md hover:bg-sky-500 transition-colors duration-300"
-              onClick={goToNextQuestion}
-              disabled={currentQuestionIndex === data.length - 1}
-            >
-              Next
-            </button>
+            {currentQuestionIndex >= data.length - 1 ?
+              <button
+                className="px-4 py-2 outline outline-sky-500 text-white rounded-md hover:bg-sky-500 transition-colors duration-300"
+                onClick={submitTest}
+              >
+                Submit
+              </button>
+              :
+              <button
+                className="px-4 py-2 outline outline-sky-500 text-white rounded-md hover:bg-sky-500 transition-colors duration-300"
+                onClick={goToNextQuestion}
+                disabled={currentQuestionIndex === data.length - 1}
+              >
+                Next
+              </button>
+            }
           </div>
         </div>
-        <div className="bg-gray-700 p-4  fixed pt-96 right-0 h-screen">
+        <div className="bg-gray-700 p-4  fixed pt-48 right-0 h-screen">
           <Timer
             key={currentQuestionIndex} // This key ensures the timer component is re-rendered when the question changes
             initialTime={30}
             onTimeout={goToNextQuestion}
           />
           <div className="flex flex-col justify-center items-center ">
+
             <div className="font-bold text-green-300 mt-20">Questions</div>
             <div className="grid grid-cols-5 gap-4">
-              {data.map((item) => (
+              {data.map((item, index) => (
                 <button
                   key={item.id}
                   // onClick={() => setQuestion(item.id)}
-                  className={`h-5 w-5 m-4 ${
-                    item.id === currentQuestionIndex + 1 ? "bg-sky-500" : ""
-                  }`}
+                  className={`h-12 w-12  ${item.id === currentQuestionIndex + 1 ? "bg-sky-500 p-2 rounded-lg" : ""
+                    }`}
                 >
-                  {item.id}
+                  {index + 1}
                 </button>
               ))}
             </div>
@@ -321,9 +268,33 @@ function Quiz() {
         </div>
       </div>
     );
-  } else {
-    return <div>Test has been submitted successfully </div>;
+  } else if (currentQuestionIndex === data.length) {
+    return (
+      <div className="flex items-center justify-center bg-gray-900 h-screen text-white flex-col">
+        {
+          done === true ? <div className="flex items-center justify-center bg-gray-900 h-screen text-white flex-col">
+            <div className=" text-6xl text-center">
+              Test Submitted Successfully
+            </div>
+            <Link className="text-xl items-center justify-center my-4 outline w-fit outline-sky-500 px-4 hover:bg-sky-600 duration-300 text-white rounded-md p-2" to="/home">
+              Home
+            </Link>
+          </div> : <div>
+            <div className=" text-4xl text-center">
+              Your Response has been recorded. Submit Test!
+            </div>
+            <button
+              className="px-4 py-2 my-4 outline outline-sky-500 text-white rounded-md hover:bg-sky-500 transition-colors duration-300"
+              onClick={submitTest}
+            >
+              Submit
+            </button>
+          </div>
+        }
+      </div>
+    );
   }
 }
+
 
 export default Quiz;

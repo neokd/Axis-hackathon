@@ -149,7 +149,7 @@ function Rank() {
                                         </p>
                                     </div>
                                     <div>
-                                        <button className="outline outline-sky-500 hover:bg-sky-700 duration-300 dark:text-white px-2 py-2 rounded-lg font-normal" onClick={() => rankResume(item.jd_id, item.title, item.description, item.salary)}>Rank Resume</button>
+                                        <button className="outline outline-sky-500 outline-2 hover:text-white shadow-lg hover:shadow-sky-500 hover:bg-sky-500 duration-300 dark:text-white px-2 py-2 rounded-lg font-normal" onClick={() => rankResume(item.jd_id, item.title, item.description, item.salary)}>Rank Resume</button>
                                     </div>
                                 </div>
                             </div>

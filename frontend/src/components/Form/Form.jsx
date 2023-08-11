@@ -44,10 +44,10 @@ const Form = ({ data, user_id }) => {
   return (
     <div className=" container mx-auto flex flex-col justify-center py-12 px-6 lg:px-8">
       <div className="mt-8 ">
-        <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+        <div className="bg-neutral-100 dark:bg-neutral-800  py-8 px-6 shadow rounded-lg sm:px-10">
           <form className="mb-0 space-y-6" onSubmit={handleSubmit}>
             <div>
-              <label htmlFor="name" className="block text-sm font-semibold ">
+              <label htmlFor="name" className="block text-sm font-semibold dark:text-white ">
                 Name
               </label>
 
@@ -59,7 +59,7 @@ const Form = ({ data, user_id }) => {
                   defaultValue={data.name}
                   onChange={(e) => setName(e.target.value)}
                   required
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -67,7 +67,7 @@ const Form = ({ data, user_id }) => {
             <div>
               <label
                 htmlFor="user_email"
-                className="block text-sm font-semibold text-gray-700"
+                className="block text-sm font-semibold text-gray-700 dark:text-white"
               >
                 Email address
               </label>
@@ -81,18 +81,18 @@ const Form = ({ data, user_id }) => {
                   // disabled
                   autoComplete="email"
                   required
-                  className="rounded-md  w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md  w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700"
+              <label htmlFor="phone" className="block dark:text-white text-sm font-medium text-gray-700"
               >
                 Phone Number
               </label>
               <div className="mt-1 flex w-[90%]">
-                <span className="px-3 py-2 rounded-l-md border border-gray-300 bg-gray-50 text-gray-500">
+                <span className="px-3 py-2 rounded-l-md border border-gray-300 bg-transparent dark:text-neutral-200 text-gray-500">
                   +91
                 </span>
                 <input
@@ -102,7 +102,7 @@ const Form = ({ data, user_id }) => {
                   defaultValue={data.mobile_number}
                   onChange={(e) => setPhone(e.target.value)}
                   required
-                  className="flex-1 focus:ring-purple-500 focus:border-purple-500 block w-full border-2 bg-gray-50 sm:text-sm border-gray-300  rounded-r-md p-2"
+                  className="flex-1  block w-full border-2 bg-transparent dark:text-neutral-200 sm:text-sm   rounded-r-md p-2"
                 />
               </div>
             </div>
@@ -110,7 +110,7 @@ const Form = ({ data, user_id }) => {
             <div>
               <label
                 htmlFor="college_name"
-                className="block text-sm font-semibold "
+                className="block text-sm font-semibold dark:text-white "
               >
                 College-Name
               </label>
@@ -122,13 +122,13 @@ const Form = ({ data, user_id }) => {
                   onChange={(e) => setCollegeName(e.target.value)}
                   defaultValue={data.college_name}
                   required
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="degree" className="block text-sm font-semibold ">
+              <label htmlFor="degree" className="block text-sm font-semibold dark:text-white">
                 Degree
               </label>
 
@@ -140,13 +140,13 @@ const Form = ({ data, user_id }) => {
                   defaultValue={data.degree[0]}
                   onChange={(e) => setDegree(e.target.value)}
                   required
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="city" className="block text-sm font-semibold ">
+              <label htmlFor="city" className="block text-sm font-semibold dark:text-white">
                 City
               </label>
 
@@ -157,12 +157,12 @@ const Form = ({ data, user_id }) => {
                   type="text"
                   defaultValue={data.city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="skills" className="block text-sm font-semibold ">
+              <label htmlFor="skills" className="block text-sm font-semibold dark:text-white ">
                 Skills
               </label>
 
@@ -173,13 +173,13 @@ const Form = ({ data, user_id }) => {
                   defaultValue={skills}
                   onChange={(e) => setSkills(e.target.value)}
                   required
-                  className="rounded-md w-[90%] h-32 p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] h-32 p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="skills" className="block text-sm font-semibold ">
+              <label htmlFor="skills" className="block text-sm font-semibold dark:text-white">
                 Experience
               </label>
 
@@ -189,7 +189,7 @@ const Form = ({ data, user_id }) => {
                   name="skills"
                   onChange={(e) => setExperience(e.target.value)}
                   defaultValue={data.experience}
-                  className="rounded-md w-[90%] h-32 p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] h-32 p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -197,7 +197,7 @@ const Form = ({ data, user_id }) => {
             <div>
               <label
                 htmlFor="total_experience"
-                className="block text-sm font-semibold "
+                className="block text-sm font-semibold dark:text-white"
               >
                 Years of Experience
               </label>
@@ -209,7 +209,7 @@ const Form = ({ data, user_id }) => {
                   type="text"
                   defaultValue={data.total_experience}
                   onChange={(e) => setTotalExperience(e.target.value)}
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
@@ -217,7 +217,7 @@ const Form = ({ data, user_id }) => {
             <div>
               <label
                 htmlFor="total_experience"
-                className="block text-sm font-semibold "
+                className="block text-sm font-semibold dark:text-white"
               >
                 Social Links
               </label>
@@ -227,9 +227,10 @@ const Form = ({ data, user_id }) => {
                   id="github_url"
                   name="github_url"
                   type="text"
+                  placeholder="github.com/username"
                   onChange={(e) => setGithubUrl(e.target.value)}
                   value={data.github_url}
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2 bg-transparent dark:text-neutral-200"
                 />
               </div>
               <div className="mt-3">
@@ -237,16 +238,17 @@ const Form = ({ data, user_id }) => {
                   id="linkedin_url"
                   name="linkedin_url"
                   type="text"
+                  placeholder="linkedin.com/in/username"
                   onChange={(e) => setLinkedinUrl(e.target.value)}
                   value={data.linkedin_url}
-                  className="rounded-md w-[90%] p-2 border-2 bg-gray-50"
+                  className="rounded-md w-[90%] p-2 border-2  bg-transparent dark:text-neutral-200"
                 />
               </div>
             </div>
 
             <button
               type="submit"
-              className="outline outline-2 outline-purple-500 text-purple-800 font-bold py-2 px-4 rounded-md hover:bg-purple-600 hover:text-white hover:text-bold duration-300"
+              className="outline outline-2 outline-sky-500 text-white font-bold py-2 px-4 rounded-md hover:bg-sky-600 hover:text-white hover:text-bold duration-300"
             >
               Save Changes
             </button>

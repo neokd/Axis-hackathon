@@ -65,8 +65,10 @@ def register_user(email, username, password):
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
 
     user_id = str(uuid.uuid4())
+    id = 8
     data, count = supabase.table('user').insert({
-        "user_id": user_id,
+        "id": id,
+        "user_id":(user_id),
         "email": email,
         "username": username,
         "password": hashed_password,
@@ -78,7 +80,7 @@ def register_user(email, username, password):
 
 def create_user_profile(user_id, user_data):
     supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
-    data,count = supabase.table('user').select('user_id','email','created').eq('user_id',user_id).execute()
+    data,count = supabase.table('user').select('user_id','email','created_at').eq('user_id',user_id).execute()
     print(user_data)
     if data[1][0]['email'] == user_data['email'] or data[1][0]['user_id'] == user_id and data[1][0]['created'] is None: 
         _, count = supabase.table('user').update(user_data).eq('user_id',user_id).execute()
@@ -186,3 +188,15 @@ def domain_predict_category(user_id):
     with open(resume_path, 'r') as f:
         resume = f.read()
         print(resume)
+
+
+def submit_user_test(data):
+    supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
+    user_id = data['user_id']
+    user_data, count = supabase.table('user').select('*').eq('user_id',user_id).execute()
+    data['name'] = user_data[1][0]['username']
+    data['email'] = user_data[1][0]['email']
+    exam_data, count = supabase.table('exam').insert(data).execute()
+    if exam_data:
+        return 200
+    return 401

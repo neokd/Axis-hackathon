@@ -68,7 +68,7 @@ const HrProfile = () => {
           <h1 className="text-3xl font-semibold dark:text-white/90 pb-4">User Profile</h1>
           <div className="flex flex-col md:flex-row gap-4">
             <div className="flex flex-col gap-4 ">
-              <img className="rounded-full w-48" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8DkpTp_KtuG2YOISTvi3NRKqVv8RRYM8f4A&usqp=CAU" />
+              <img className="rounded-full w-48" src="https://cdn1.iconfinder.com/data/icons/avatar-2-2/512/Programmer-512.png" />
             </div>
             <div className="justify-start items-start mt-12 ">
               <h1 className="text-2xl font-semibold dark:text-white/90">{data.name}</h1>

@@ -6,14 +6,16 @@ import { TbReportAnalytics } from "react-icons/tb";
 import { AiOutlineUser, AiOutlineHeart } from "react-icons/ai";
 import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
-
+import {TbListNumbers, TbUserX} from "react-icons/tb"
+import {BsPostcard} from "react-icons/bs"
 const Sidebar = () => {
   const menus = [
     { name: "Dashboard", link: "/home", icon: MdOutlineDashboard },
     { name: "Profile", link: "/profile", icon: AiOutlineUser },
-    { name: "Apply Job", link: "/viewjd", icon: FiMessageSquare },
-    { name: "analytics", link: "/", icon: TbReportAnalytics, },
+    { name: "Apply Job", link: "/viewjd", icon: BsPostcard },
     { name: "Test", link: "/interview-question", icon: TbReportAnalytics},
+    { name: "Result", link: "/hr/result", icon: TbListNumbers },
+    { name: "Sign Out", link: "/login", icon: TbUserX },
   ];
   const [open, setOpen] = useState(true);
   return (

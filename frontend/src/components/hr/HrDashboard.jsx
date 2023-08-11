@@ -96,7 +96,7 @@ function HrDashboard() {
                 </h1>
               </div>
               <div>
-                <IoDocumentOutline className="text-6xl text-gray-400 dark:text-neutral-300" />
+                <IoDocumentOutline className="text-6xl text-green-400" />
               </div>
             </div>
             <div className="bg-zinc-100 shadow-lg hover:shadow-sky-600 duration-300 dark:bg-neutral-800 rounded-xl p-4 flex flex-row justify-between">
@@ -107,7 +107,7 @@ function HrDashboard() {
                 <h1 className="text-3xl font-semibold dark:text-white">{4}</h1>
               </div>
               <div>
-                <FaUserGraduate className="text-6xl text-gray-400 dark:text-neutral-300" />
+                <FaUserGraduate className="text-6xl text-sky-400" />
               </div>
             </div>
           </div>
@@ -137,7 +137,7 @@ function HrDashboard() {
                         <h2 className="text-xl font-normal dark:text-neutral-500 ">
                           Description
                         </h2>
-                        <h1 className="text-3xl font-semibold dark:text-white">
+                        <h1 className="text-xl font-normal dark:text-white line-clamp-2 hover:line-clamp-none duration-500">
                           {job.description}
                         </h1>
                       </div>

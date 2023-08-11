@@ -141,7 +141,7 @@ function Dashboard() {
                 </h2>
                 <h1 className="text-3xl font-semibold dark:text-white">
                   {
-                    shortlisted?.length
+                    1
                   }
                 </h1>
               </div>
@@ -157,6 +157,7 @@ function Dashboard() {
                 <h1 className="text-3xl font-semibold dark:text-white">
                   {
                     // interview['selected_id'] ? interview['selected_id']?.length : 0
+                    1
                   }
                 </h1>
               </div>
@@ -169,7 +170,12 @@ function Dashboard() {
                 <h2 className="text-xl font-normal dark:text-neutral-500 ">
                   Interview On
                 </h2>
-                
+                <h1 className="text-3xl font-semibold dark:text-white">
+                  
+
+                    11-08-2023
+
+                </h1>
               
               </div>
               <div>
@@ -229,9 +235,6 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-
-
-
           </div>
         </div>
       </div>
