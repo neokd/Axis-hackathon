@@ -2,14 +2,14 @@ import useTheme from "../../hooks/useTheme";
 import Searchbar from "./Searchbar";
 import { CgProfile } from "react-icons/cg";
 
-function Navbar() {
+function Navbar({data}) {
   const [nextTheme, setTheme] = useTheme();
 
   return (
     <nav>
       <div className="bg-zinc-100 dark:bg-neutral-950 h-16 px-4 z-10 ">
         <div className="lg:p-3 p-2  duration-100 mx-2 rounded-lg flex justify-between w-full">
-          <Searchbar />
+          <Searchbar data={data} />
           <div className=" p-2   duration-100 mx-2 rounded-lg  flex">
             <button
               onClick={nextTheme === "light" ? () => setTheme(nextTheme) : null}

@@ -339,7 +339,7 @@ def hr_shortlist_test():
         schedule_test(data)
         return jsonify({"message": "test"})
 
-@app.route('/api/hr/interview-question', methods=['GET','POST'])
+@app.route('/api/hr/interview-question', methods=['POST'])
 def interview_question():
     hr_id = request.headers.get('X-Hr-ID')
     if not hr_id:
@@ -347,15 +347,7 @@ def interview_question():
     
     if request.method == 'POST':
         data = request.get_json()
-        num_question = data['num_question']
-        difficulty = data['difficulty']
-        topic = data['domain']
-        response = interview_question_generator(num_question,difficulty,topic)
-        print(data)
-        # response =  MCQGen()
-        return
-    
-
+        
     return jsonify({"message": "test"})
 
 """ 

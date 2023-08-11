@@ -114,7 +114,7 @@ function Dashboard() {
     <div className='flex '>
       <Sidebar />
       <div className='flex flex-col w-full'>
-        <Navbar />
+        <Navbar data={jdData} />
         <div className="text-xl bg-white/90 dark:bg-neutral-900 duration-300 min-h-screen  font-semibold p-4">
           <h1 className="text-3xl dark:text-white mx-8 mt-4 font-semibold">Dashboard</h1>
           <h2 className="text-2xl dark:text-white mx-8 mt-4 font-semibold">Welcome {data?.name}</h2>

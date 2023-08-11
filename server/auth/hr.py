@@ -176,5 +176,8 @@ def schedule_test(data):
 
 def interview_question_generator():
     supabase = create_client(os.environ.get('SUPABASE_URL'), os.environ.get('SUPABASE_KEY'))
-    question_data, count = supabase.table('questions').select('*').execute()
+    question_data, count = supabase.table('scheduled').select('*').execute()
+    # Compare end date with todays date and start generating questions ans update the database with question id
+    # if end date is less than todays date then delete the jd from database
+    return question_data
     return
