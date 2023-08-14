@@ -1,15 +1,40 @@
+import { useState } from "react";
 import useTheme from "../../hooks/useTheme";
 import Searchbar from "./Searchbar";
 import { CgProfile } from "react-icons/cg";
+import { FiSearch } from "react-icons/fi";
 
-function Navbar() {
+function Navbar({ jds, filteredJds, onFilter }) {
+  console.log("the jds inside the navbar are ", jds);
+
+  const [inputdata, setInputdata] = useState();
+  const [filteredData, setFilteredData] = useState(jds);
+
+  const handleSearch = (inputValue) => {
+    setInputdata(inputValue);
+
+    const filteredData = jds.filter((jd) =>
+      jd.title.toLowerCase().includes(inputValue.toLowerCase())
+    );
+
+    onFilter(filteredData);
+  };
+
   const [nextTheme, setTheme] = useTheme();
 
   return (
     <nav>
       <div className="bg-zinc-100 dark:bg-neutral-950 h-16 px-4 z-10 ">
         <div className="lg:p-3 p-2  duration-100 mx-2 rounded-lg flex justify-between w-full">
-          <Searchbar />
+          <div className="w-full flex flex-row relative">
+            <FiSearch className="absolute inset-y-0 left-0 flex items-center pl-1 pointer-events-none w-11 h-11 p-3 dark:text-white/60 " />
+            <input
+              type="text"
+              className="bg-slate-200 dark:bg-neutral-800 border border-slate-800 outline-1  dark:outline-slate-800  focus:outline-sky-600 dark:focus:outline-sky-600 p-2 w-1/2 rounded-xl dark:text-white pl-8"
+              placeholder="Search..."
+              onChange={(e) => handleSearch(e.target.value)}
+            />
+          </div>
           <div className=" p-2   duration-100 mx-2 rounded-lg  flex">
             <button
               onClick={nextTheme === "light" ? () => setTheme(nextTheme) : null}
