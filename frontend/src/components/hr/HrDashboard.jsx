@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 import { IoDocumentOutline } from "react-icons/io5";
 import { FaUserGraduate } from "react-icons/fa";
 import PostJD from "./PostJD";
+import ChatCard from "../ChatCard/ChatCard";
 
 function HrDashboard() {
   const navigateTo = useNavigate();
@@ -65,10 +66,9 @@ function HrDashboard() {
   //     }
   //   };
 
-
   const handleToggle = (id) => {
-    localStorage.setItem('jd_id', id)
-    navigateTo('/hr/editjd')
+    localStorage.setItem("jd_id", id);
+    navigateTo("/hr/editjd");
   };
 
   return (
@@ -122,7 +122,6 @@ function HrDashboard() {
                   className="bg-zinc-100 shadow-lg hover:shadow-sky-600 duration-300 dark:bg-neutral-800 rounded-xl p-4 flex flex-col justify-between mb-4"
                   key={job.jd_id}
                 >
-
                   <div className="flex flex-row justify-between">
                     <div className="flex flex-col">
                       <div className="flex flex-col">
@@ -152,14 +151,16 @@ function HrDashboard() {
                         </h1>
                       </div>
                       <div className="flex flex-col">
-                        <Link to="/hr/editjd"
-                          className="bg-sky-600 hover:bg-sky-700 duration-300 text-white rounded-lg px-4 py-2 mt-4" onClick={() => handleToggle(job.jd_id)}>
+                        <Link
+                          to="/hr/editjd"
+                          className="bg-sky-600 hover:bg-sky-700 duration-300 text-white rounded-lg px-4 py-2 mt-4"
+                          onClick={() => handleToggle(job.jd_id)}
+                        >
                           Edit
                         </Link>
                       </div>
                     </div>
                   </div>
-
                 </div>
               ))}
             </div>
