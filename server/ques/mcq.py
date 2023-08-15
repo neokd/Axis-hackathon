@@ -13,11 +13,7 @@ import requests
 from collections import OrderedDict
 import string
 import pke
-import nltk
 from nltk import FreqDist
-nltk.download('brown')
-nltk.download('stopwords')
-nltk.download('popular')
 from nltk.corpus import stopwords
 from nltk.corpus import brown
 from similarity.normalized_levenshtein import NormalizedLevenshtein
@@ -31,7 +27,6 @@ def MCQs_available(word,s2v):
         return True
     else:
         return False
-
 
 def edits(word):
     "All edits that are one edit away from `word`."
@@ -231,7 +226,7 @@ def generate_questions_mcq(keyword_sent_mapping,device,tokenizer,model,sense2vec
     with torch.no_grad():
         outs = model.generate(input_ids=input_ids,
                               attention_mask=attention_masks,
-                              max_length=150)
+                              max_length=512)
 
     output_array ={}
     output_array["questions"] =[]
@@ -251,7 +246,7 @@ def generate_questions_mcq(keyword_sent_mapping,device,tokenizer,model,sense2vec
 
         individual_question["options"] =  filter_phrases(individual_question["options"], 10,normalized_levenshtein)
         index = 3
-        individual_question["extra_options"]= individual_question["options"][index:]
+        # individual_question["extra_options"]= individual_question["options"][index:]
         individual_question["options"] = individual_question["options"][:index]
         individual_question["context"] = keyword_sent_mapping[val]
      

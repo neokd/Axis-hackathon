@@ -12,6 +12,10 @@ from ques.questiongen import MCQGen
 from datetime import datetime
 import re
 import logging
+from ques.qgen import QGen, total_words
+from langchain.tools import WikipediaQueryRun
+from langchain.utilities import WikipediaAPIWrapper
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '123456789' # Yeah the most secure key 😂
@@ -352,7 +356,16 @@ def interview_question():
         questions = data[-1]['questions']
         domain = data[-1]['domain']
         difficulty = data[-1]['difficulty']
-        response = MCQGen(int(questions),domain,difficulty)
+        words = total_words(domain,difficulty)
+        wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+        wiki_text = wikipedia.run("python developer")
+        payload = {
+            "input_text": wiki_text,
+            "max_questions": int(questions)
+        }
+        qgen = QGen()
+        response = json.dumps(qgen.predict_mcq(payload), indent=4)
+        # response = MCQGen(int(questions),domain,difficulty)
         return response
 
 @app.route('/api/user/submit',methods=['POST'])
@@ -406,6 +419,22 @@ def admn_home_user():
         response = get_all_user()
         return jsonify(response)
 
+@app.route('/api/chat',methods=['GET','POST'])
+def chat():
+    if request.method == 'GET':
+
+        return jsonify({'message':'Chat posted successfully'})
+
+    if request.method == 'POST':
+        data = request.get_json()
+        response = data['message']
+        print(response)
+        if str(response) == 'hi':
+            return jsonify({'message':'Hello'})
+        elif str(response) == 'how to apply for jobs':
+            return jsonify({'message':'You can apply for jobs by clicking on the apply job button on the sidebar'})
+        
+        # return jsonify({'message':})
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -4,9 +4,6 @@ from nltk.corpus import brown
 import numpy as np
 import pandas as pd
 import nltk
-import requests
-import string
-import random
 import spacy
 from sense2vec import Sense2Vec
 import os
@@ -14,25 +11,28 @@ import json
 import time
 import torch
 from transformers import T5ForConditionalGeneration,T5Tokenizer
-import zipfile
 from nltk.tokenize import sent_tokenize
+from similarity.normalized_levenshtein import NormalizedLevenshtein
+from langchain import OpenAI, LLMChain, PromptTemplate
 
-from similari
-from mcq import tokenize_sentences,get_keywords,get_sentences_for_keyword,generate_questions_mcq,generate_normal_questions
-
-try: 
-    nltk.download('brown')
-    nltk.download('stopwords')
-    nltk.download('popular')
+try:
+    # Check if NLTK data is already downloaded
+    if not nltk.data.find('corpora/brown'):
+        nltk.download('brown')
+    if not nltk.data.find('corpora/stopwords'):
+        nltk.download('stopwords')
+    if not nltk.data.find('corpora/words'):
+        nltk.download('words')
 except:
-    print("===== ERROR OCCURED =====")
+    print("===== ERROR OCCURRED =====")
 finally:
     print("===== NLTK DOWNLOADED =====")
+from ques.mcq import tokenize_sentences,get_keywords,get_sentences_for_keyword,generate_questions_mcq
 
 
 class QGen:
     def __init__(self):
-        self.tokenizer = T5Tokenizer.from_pretrained('flan-t5-base')
+        self.tokenizer = T5Tokenizer.from_pretrained('google/flan-t5-xxl')
         model = T5ForConditionalGeneration.from_pretrained('Parth/result')
         if torch.cuda.is_available():
             device = torch.device('cuda')
@@ -48,18 +48,34 @@ class QGen:
         except:
             os.system('python -m spacy download en_core_web_trf')
             self.nlp = spacy.load('en_core_web_trf')
+        self.s2v = None
+
         try:
-            self.s2v = Sense2Vec().from_disk('s2v_reddit_2019_lg')
+            self.s2v = Sense2Vec().from_disk('s2v_old')
         except:
-            os.system('wget https://github.com/explosion/sense2vec/releases/download/v1.0.0/s2v_reddit_2019_lg.tar.gz.001')
-            
+            try:
+                if os.path.exists('s2v_reddit_2015_md'):
+                    print("s2v_reddit_2015_md already exists")
+                else:
+                    print("Downloading s2v_reddit_2015_md")
+                    os.system('wget https://github.com/explosion/sense2vec/releases/download/v1.0.0/s2v_reddit_2015_md.tar.gz')
+                    os.system('cat s2v_reddit_2015_md.tar.gz* | tar -xzv')
+                if os.path.exists('s2v_reddit_2015_md.tar.gz'):
+                    print("Extracting s2v_reddit_2015_md")
+                    os.system('cat s2v_reddit_2015_md.tar.gz* | tar -xzv')
+            except:
+                print("Failed to download and extract s2v_reddit_2015_md")
+            finally:
+                if self.s2v is None:
+                    self.s2v = Sense2Vec().from_disk('s2v_reddit_2015_md')
+
         self.fdist = FreqDist(brown.words())
-        self.normalized_levenshtein = normalized_levenshtein()
+        self.normalized_levenshtein = NormalizedLevenshtein()
         self.set_seed(42)
 
     def set_seed(self,seed):
         np.random.seed(seed)
-        torch.manual_seed(seed)
+        torch.manual_seed(seed) 
         if torch.cuda.is_available():
             torch.cuda.manual_seed_all(seed)
 
@@ -68,7 +84,7 @@ class QGen:
         start = time.time()
         inp = {
             "input_text": payload.get("input_text"),
-            "max_questions": payload.get("max_questions", 10)
+            "max_questions": payload.get("max_questions")
         }
 
         text = inp['input_text']
@@ -101,17 +117,30 @@ class QGen:
 
             final_output["statement"] = modified_text
             final_output["questions"] = generated_questions["questions"]
-            final_output["time_taken"] = end-start
+            # final_output["time_taken"] = end-start
+
             
             if torch.device=='cuda':
                 torch.cuda.empty_cache()
                 
             return final_output
 
+def total_words(num_questions,difficulty_level):
+    if difficulty_level == "easy":
+        total_words = (num_questions * 50 ) + 100
+    elif difficulty_level == "medium":
+        total_words = (num_questions * 100 ) + 200
+    elif difficulty_level == "hard":
+        total_words =  (num_questions * 50 ) + 100
+    return total_words
 
 if __name__ == '__main__':
     qgen = QGen()
+    wikipedia = WikipediaQueryRun(api_wrapper=WikipediaAPIWrapper())
+    x = wikipedia.run("python developer")
+    # x = MCQGen(8, "easy", "python developer")
     payload = {
-            "input_text": "Sachin Ramesh Tendulkar is a former international cricketer from India and a former captain of the Indian national team. He is widely regarded as one of the greatest batsmen in the history of cricket. He is the highest run scorer of all time in International cricket."
+            "input_text": x
         }
-    print(qgen.predict_mcq(payload))
+    # JSON format
+    print(json.dumps(qgen.predict_mcq(payload), indent=4))

@@ -1,10 +1,12 @@
 import React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { Link } from "react-router-dom";
+import WebCam from 'react-webcam';
 
 function Timer({ initialTime, onTimeout }) {
   const [seconds, setSeconds] = useState(initialTime);
 
+  const webcamRef = useRef(null);
   useEffect(() => {
     const interval = setInterval(() => {
       setSeconds((prevSeconds) => {
@@ -24,13 +26,33 @@ function Timer({ initialTime, onTimeout }) {
   }, [onTimeout]);
 
   return (
-    <div className="p-4 border rounded-lg shadow-md">
-      <p className="text-lg font-semibold mb-2">Time left: {seconds} seconds</p>
-      <div className="h-2 w-full bg-neutral-200 rounded-lg">
-        <div
-          className="h-2 bg-sky-500 rounded-lg"
-          style={{ width: `${(seconds / initialTime) * 100}%` }}
-        ></div>
+    <div className="p-4  rounded-lg shadow-md">
+      <div className="flex flex-col justify-center items-center mb-4">
+        <button
+          onClick={() => {
+            const imageSrc = webcamRef.current.getScreenshot();
+          }}
+          className="px-4 py-2 mb-4 bg-red-500 text-white rounded-md hover:bg-sky-600 transition-colors duration-300"
+        >
+          Recording
+        </button>
+        <WebCam
+          audio={false}
+          ref={webcamRef}
+          width={300}
+          screenshotFormat="image/jpeg"
+          className="border rounded-md"
+        />
+
+      </div>
+      <div className="">
+        <p className="text-lg font-semibold mb-2">Time left: {seconds} seconds</p>
+        <div className="h-2 w-full bg-neutral-200 rounded-lg">
+          <div
+            className="h-2 bg-sky-500 rounded-lg"
+            style={{ width: `${(seconds / initialTime) * 100}%` }}
+          ></div>
+        </div>
       </div>
     </div>
   );
@@ -254,13 +276,12 @@ function Quiz() {
             {currentQuestion.options.map((item, index) => (
               <div
                 key={index}
-                className={`px-32 py-4 bg-neutral-700 rounded-md cursor-pointer ${
-                  index === markedOptions[currentQuestionIndex]
-                    ? index === currentQuestion.answer
-                      ? "bg-green-500 hover:bg-green-600"
-                      : "bg-red-500 hover:bg-red-600"
-                    : "hover:bg-sky-600 transition-colors duration-300"
-                }`}
+                className={`px-32 py-4 bg-neutral-700 rounded-md cursor-pointer ${index === markedOptions[currentQuestionIndex]
+                  ? index === currentQuestion.answer
+                    ? "bg-green-500 hover:bg-green-600"
+                    : "bg-red-500 hover:bg-red-600"
+                  : "hover:bg-sky-600 transition-colors duration-300"
+                  }`}
                 onClick={() => handleOptionClick(index)}
               >
                 {item}
@@ -291,9 +312,8 @@ function Quiz() {
                 <button
                   key={item.id}
                   // onClick={() => setQuestion(item.id)}
-                  className={`h-5 w-5 m-4 ${
-                    item.id === currentQuestionIndex + 1 ? "bg-sky-500" : ""
-                  }`}
+                  className={`h-5 w-5 m-4 ${item.id === currentQuestionIndex + 1 ? "bg-sky-500" : ""
+                    }`}
                 >
                   {item.id}
                 </button>

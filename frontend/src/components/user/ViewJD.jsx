@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import Navbar from "../hr/Navbar";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import Notifications from "./Notifications";
 
 function ViewJD() {
   const [data, setData] = useState([]);
   const [filteredJobData, setFilteredJobData] = useState(data);
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [message, setMessage] = useState();
+  const [type, setType] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");
@@ -52,7 +55,13 @@ function ViewJD() {
         jd_id: jd_id,
       }),
     });
-    const data = await response.json();
+    const data2 = await response.json();
+    //  Filter applied job
+    if (data2) {
+      const filteredData = data.filter((item) => item.jd_id === jd_id);
+      setMessage(`Applied for ${filteredData[0].title} successfully`);
+      setType("success");
+    }
   };
 
   console.log("the jds are", data);
@@ -76,31 +85,30 @@ function ViewJD() {
           <h1 className="text-3xl dark:text-white mx-8 mt-4 font-semibold">
             Jobs
           </h1>
+          <Notifications message={message} type={type} />
           <div className="grid grid-cols-1 gap-4 px-8 mt-12 w-3/4">
             {filteredJobData.map((item) => (
               <div
                 key={item.jd_id}
-                className={`bg-white dark:text-white dark:bg-neutral-800 p-4 mrounded-lg shadow flex flex-row justify-between rounded-xl  ${
-                  hoveredCard === item.jd_id
+                className={`bg-white dark:text-white dark:bg-neutral-800 p-4 mrounded-lg shadow flex flex-row justify-between rounded-xl  ${hoveredCard === item.jd_id
                     ? "shadow-lg shadow-sky-500 duration-500"
                     : ""
-                }`}
+                  }`}
                 onMouseEnter={() => setHoveredCard(item.jd_id)}
                 onMouseLeave={() => setHoveredCard(null)}
               >
                 <div>
                   <h2 className="text-xl font-semibold">{item.title}</h2>
-                  <p className="mt-2">{item.description}</p>
+                  <p className="mt-2 line-clamp-2 dark:text-gray-200">{item.description}</p>
                   <div
-                    className={`relative m  bg-white/90 duration-500 delay-200 dark:bg-neutral-800 flex flex-col    ${
-                      hoveredCard === item.jd_id ? "opacity-100" : "opacity-50"
-                    }`}
+                    className={`relative m  bg-white/90 duration-500 delay-200 dark:bg-neutral-800 flex flex-col    ${hoveredCard === item.jd_id ? "opacity-100" : "opacity-50"
+                      }`}
                   >
                     <h1 className="mb-2 font-semibold">
                       Salary: {item.salary}
                     </h1>
                     <div className="mb-2 font-semibold">
-                      Skills: {item?.skills?.join(", ")}
+                      Skills:{item?.skills?.join(", ")}
                     </div>
                   </div>
                 </div>

@@ -224,7 +224,7 @@ function Dashboard() {
                             <td className="px-6 py-4 whitespace-no-wrap">
                               <div className="flex items-center">
                                 <div className="ml-4">
-                                  <div className="text-sm leading-5 font-medium text-neutral-900 dark:text-neutral-200">
+                                  <div className="text-md leading-5 font-medium text-neutral-900 dark:text-neutral-200">
                                     {item.title}
                                   </div>
                                 </div>
@@ -237,6 +237,7 @@ function Dashboard() {
                             </td>
                           </tr>
                         ))}
+                        
                       </tbody>
                     </table>
                   </div>
