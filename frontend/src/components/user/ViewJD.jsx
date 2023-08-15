@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import Navbar from "./Navbar";
+import Navbar from "../hr/Navbar";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 function ViewJD() {
   const [data, setData] = useState([]);
+  const [filteredJobData, setFilteredJobData] = useState(data);
   const navigate = useNavigate();
   const [hoveredCard, setHoveredCard] = useState(null);
 
@@ -34,6 +35,10 @@ function ViewJD() {
     fetchJD();
   }, []);
 
+  useEffect(() => {
+    setFilteredJobData(data); // Set the initial filtered data to jobData
+  }, [data]);
+
   const handleApply = async (jd_id) => {
     const user_id = localStorage.getItem("user_id");
     const response = await fetch("/api/applyjd", {
@@ -50,18 +55,29 @@ function ViewJD() {
     const data = await response.json();
   };
 
+  console.log("the jds are", data);
+
+  const handleFilter = (filteredData) => {
+    setFilteredJobData(filteredData);
+  };
+
+  console.log("the filtered data initially is ", filteredJobData);
 
   return (
     <div className="flex ">
       <Sidebar />
       <div className="flex flex-col w-full">
-        <Navbar />
+        <Navbar
+          jds={data}
+          filteredJds={filteredJobData}
+          onFilter={handleFilter}
+        />
         <div className="text-xl bg-white/90 dark:bg-neutral-900 duration-300 min-h-screen  font-semibold p-4">
           <h1 className="text-3xl dark:text-white mx-8 mt-4 font-semibold">
             Jobs
           </h1>
           <div className="grid grid-cols-1 gap-4 px-8 mt-12 w-3/4">
-            {data.map((item) => (
+            {filteredJobData.map((item) => (
               <div
                 key={item.jd_id}
                 className={`bg-white dark:text-white dark:bg-neutral-800 p-4 mrounded-lg shadow flex flex-row justify-between rounded-xl  ${
