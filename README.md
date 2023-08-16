@@ -27,7 +27,7 @@ This project is for the Axis Bankathon. The project is a web application that us
 4. Configure necessary API keys and environment variables.
 
 ## Usage
-1. Launch React.js frontend: `cd frontend && npm start`
+1. Launch React.js frontend: `cd frontend && npm run dev`
 2. Run Python backend server: `cd server && python main.py`
 3. Access the application in your browser at `http://localhost:5173`.
 
